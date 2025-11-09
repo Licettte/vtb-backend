@@ -1,0 +1,43 @@
+server:
+  address: 0.0.0.0
+
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/elly
+    username: postgres
+    password: postgres
+  flyway:
+    enabled: true         # миграции прогонятся при старте Boot
+    url: jdbc:postgresql://localhost:5432/elly
+    user: postgres
+    password: postgres
+    schemas: public
+    locations: classpath:db/migration
+    out-of-order: true
+
+security:
+  jwt:
+    issuer: "elly"
+    access-ttl-min: 300
+    refresh-ttl-days: 14
+    secret: "CHANGE_ME_SUPER_SECRET_256_BITS_MIN"
+
+logging:
+  level:
+    org.springframework.r2dbc.core: DEBUG
+    org.flywaydb.core: INFO
+
+elly:
+  # TeamID/секрет команды — идут в /auth/bank-token и в X-Requesting-Bank
+  teamClientId: "team205"
+  teamClientSecret: "***"
+
+  # Базовые URL-ы банков (по коду банка → baseUrl)
+  banks:
+    vbank:
+      baseUrl: "https://vbank.open.bankingapi.ru"
+    abank:
+      baseUrl: "https://abank.open.bankingapi.ru"
+#    sbank:
+#      baseUrl: "https://sbank.open.bankingapi.ru"
+
